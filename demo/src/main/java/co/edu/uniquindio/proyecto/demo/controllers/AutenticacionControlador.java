@@ -15,23 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
-public class AutenticacionControlador {
-
+@RequestMapping("/api/cliente")
+public class ClienteControlador {
 
     private final CuentaServicio cuentaServicio;
 
-    @PostMapping("/iniciar-sesion")
-    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesion(@Valid @RequestBody LoginDTO loginDTO) throws Exception{
-        TokenDTO token = cuentaServicio.iniciarSesion(loginDTO);
-        return ResponseEntity.ok(new MensajeDTO<>(false, token));
+    // Activa una cuenta usando el código de validación
+    @PutMapping("/activar-cuenta")
+    public ResponseEntity<MensajeDTO<String>> activarCuenta(@RequestBody ActivarCuentaDTO activarCuentaDTO) throws Exception {
+        cuentaServicio.activarCuenta(activarCuentaDTO);
+        return ResponseEntity.ok(new MensajeDTO<>(false, "Cuenta activada exitosamente."));
     }
-
-    @PostMapping("/crear-cuenta")
-    public ResponseEntity<MensajeDTO<String>> crearCuenta(@Valid @RequestBody CrearCuentaDTO cuenta) throws Exception{
-        cuentaServicio.crearCuenta(cuenta);
-        return ResponseEntity.ok(new MensajeDTO<>(false, "Cuenta creada exitosamente"));
-    }
-
-
 }
